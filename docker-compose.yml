@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  node_app:
+    container_name: node_app
+    build: .
+    image: programmeramandeep/node_crud_postgres
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PG_DB=node_crud_postgres_db
+      - PG_USER=programmeramandeep
+      - PG_PASSWORD=1234
+      - PG_HOST=node_db
+    depends_on:
+      - node_db
+    restart: always
+  
+  node_db:
+    container_name: node_db
+    image: postgres:12
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=node_crud_postgres_db
+      - POSTGRES_USER=programmeramandeep
+      - POSTGRES_PASSWORD=1234
+    volumes:
+      - node_db_data:/var/lib/postgresql/data
+
+volumes:
+  node_db_data: {}
